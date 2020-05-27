@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
 
     <ImageView
         android:layout_width="100dp"
@@ -16,9 +17,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+    />
     <TextView
-        android:id="@+id/missionName"
+        android:id="@+id/mission_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/missionPatch"
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@+id/missionPatch"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionName"
+        app:layout_constraintTop_toBottomOf="@+id/mission_name"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Launch Site #1"
         android:layout_marginTop="8dp"

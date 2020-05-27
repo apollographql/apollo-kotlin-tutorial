@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools">
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+              android:text="@string/login"
+              android:layout_margin="50dp"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              android:gravity="center"
+              android:textStyle="bold"
+              android:id="@+id/login"
+              android:textSize="36sp"
+    />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:id="@+id/email_layout"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:hint="@string/email"
+        tools:text="test@test.com"
+    >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/email_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/submit"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:id="@+id/submit_progress_bar"
+                 app:layout_constraintStart_toStartOf="@+id/submit"
+                 app:layout_constraintEnd_toEndOf="@+id/submit"
+                 app:layout_constraintTop_toTopOf="@+id/submit"
+                 app:layout_constraintBottom_toBottomOf="@+id/submit"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav"
+            app:startDestination="@id/launchListFragment">
+
+    <fragment
+        android:id="@+id/launchListFragment"
+        android:name="com.example.rocketreserver.LaunchListFragment"
+        tools:layout="@layout/launch_list_fragment">
+        <action
+            android:id="@+id/openLaunchDetails"
+            app:destination="@id/launch_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/launch_details_fragment"
+        android:name="com.example.rocketreserver.LaunchDetailsFragment"
+        tools:layout="@layout/launch_details_fragment">
+        <argument
+            android:name="launchId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/open_login"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.rocketreserver.LoginFragment"
+        tools:layout="@layout/login_fragment" />
+
+</navigation>
