@@ -5,6 +5,10 @@ query LaunchList($cursor: String) {
     launches {
       id
       site
+      mission {
+        name
+        missionPatch(size: SMALL)
+      }
     }
   }
 }

@@ -14,6 +14,7 @@ import com.apollographql.apollo.coroutines.toDeferred
 import com.apollographql.apollo.exception.ApolloException
 import com.example.rocketreserver.databinding.LaunchListFragmentBinding
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
 class LaunchListFragment : Fragment() {
     private lateinit var binding: LaunchListFragmentBinding
@@ -38,7 +39,12 @@ class LaunchListFragment : Fragment() {
                 null
             }
 
-            Log.d("LaunchList", "Success ${response?.data}")
+            val launches = response?.data?.launches?.launches?.filterNotNull()
+            if (launches != null && !response.hasErrors()) {
+                val adapter = LaunchListAdapter(launches)
+                binding.launches.layoutManager = LinearLayoutManager(requireContext())
+                binding.launches.adapter = adapter
+            }
         }
     }
 }
