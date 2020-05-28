@@ -20,12 +20,18 @@ class LaunchListAdapter(val launches: List<LaunchListQuery.Launch>) :
         return launches.size
     }
 
+    var onEndOfListReached: (() -> Unit)? = null
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val launch = launches.get(position)
         holder.binding.site.text = launch.site ?: ""
         holder.binding.missionName.text = launch.mission?.name
         holder.binding.missionPatch.load(launch.mission?.missionPatch) {
             placeholder(R.drawable.ic_placeholder)
+        }
+
+        if (position == launches.size - 1) {
+            onEndOfListReached?.invoke()
         }
     }
 }

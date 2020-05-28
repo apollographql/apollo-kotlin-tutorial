@@ -31,20 +31,44 @@ class LaunchListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val launches = mutableListOf<LaunchListQuery.Launch>()
+        val adapter = LaunchListAdapter(launches)
+        binding.launches.layoutManager = LinearLayoutManager(requireContext())
+        binding.launches.adapter = adapter
+
+        val channel = Channel<Unit>(Channel.CONFLATED)
+
+        // offer a first item to do the initial load else the list will stay empty forever
+        channel.offer(Unit)
+        adapter.onEndOfListReached = {
+            channel.offer(Unit)
+        }
+
         lifecycleScope.launchWhenResumed {
-            val response = try {
-                apolloClient.query(LaunchListQuery()).toDeferred().await()
-            } catch (e: ApolloException) {
-                Log.d("LaunchList", "Failure", e)
-                null
+            var cursor: String? = null
+            for (item in channel) {
+                val response = try {
+                    apolloClient.query(LaunchListQuery(cursor = Input.fromNullable(cursor))).toDeferred().await()
+                } catch (e: ApolloException) {
+                    Log.d("LaunchList", "Failure", e)
+                    return@launchWhenResumed
+                }
+
+                val newLaunches = response.data?.launches?.launches?.filterNotNull()
+
+                if (newLaunches != null) {
+                    launches.addAll(newLaunches)
+                    adapter.notifyDataSetChanged()
+                }
+
+                cursor = response.data?.launches?.cursor
+                if (response.data?.launches?.hasMore != true) {
+                    break
+                }
             }
 
-            val launches = response?.data?.launches?.launches?.filterNotNull()
-            if (launches != null && !response.hasErrors()) {
-                val adapter = LaunchListAdapter(launches)
-                binding.launches.layoutManager = LinearLayoutManager(requireContext())
-                binding.launches.adapter = adapter
-            }
+            adapter.onEndOfListReached = null
+            channel.close()
         }
     }
 }
