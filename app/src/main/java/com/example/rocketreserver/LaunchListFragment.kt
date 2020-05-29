@@ -48,7 +48,7 @@ class LaunchListFragment : Fragment() {
             var cursor: String? = null
             for (item in channel) {
                 val response = try {
-                    apolloClient.query(LaunchListQuery(cursor = Input.fromNullable(cursor))).toDeferred().await()
+                    apolloClient(requireContext()).query(LaunchListQuery(cursor = Input.fromNullable(cursor))).toDeferred().await()
                 } catch (e: ApolloException) {
                     Log.d("LaunchList", "Failure", e)
                     return@launchWhenResumed
