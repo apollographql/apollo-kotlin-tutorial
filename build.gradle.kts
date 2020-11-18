@@ -2,11 +2,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter {
-            content {
-                includeGroup("org.jetbrains.trove4j")
-            }
-        }
+        jcenter()
     }
 
     dependencies {
@@ -19,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        jcenter()
         mavenCentral()
     }
 }
