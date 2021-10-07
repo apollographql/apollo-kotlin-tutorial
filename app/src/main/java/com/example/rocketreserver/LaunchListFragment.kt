@@ -10,7 +10,11 @@ import com.example.rocketreserver.databinding.LaunchListFragmentBinding
 class LaunchListFragment : Fragment() {
     private lateinit var binding: LaunchListFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = LaunchListFragmentBinding.inflate(inflater)
         return binding.root
     }
