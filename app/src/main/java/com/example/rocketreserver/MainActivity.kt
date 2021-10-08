@@ -2,7 +2,6 @@ package com.example.rocketreserver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.rocketreserver.R
 
 class MainActivity : AppCompatActivity() {
 

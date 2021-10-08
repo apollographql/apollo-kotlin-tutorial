@@ -33,7 +33,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.core:core-ktx:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")

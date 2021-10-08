@@ -10,7 +10,7 @@ import com.example.rocketreserver.databinding.LoginFragmentBinding
 class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -13,7 +13,7 @@ class LaunchDetailsFragment : Fragment() {
     private lateinit var binding: LaunchDetailsFragmentBinding
     val args: LaunchDetailsFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = LaunchDetailsFragmentBinding.inflate(inflater)
 
         return binding.root
