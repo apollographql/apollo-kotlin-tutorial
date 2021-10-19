@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.coroutines.await
 import com.example.rocketreserver.databinding.LoginFragmentBinding
-import java.lang.Exception
 
 class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,7 +37,7 @@ class LoginFragment : Fragment() {
             binding.submit.visibility = View.GONE
             lifecycleScope.launchWhenResumed {
                 val response = try {
-                    apolloClient(requireContext()).mutate(LoginMutation(email = Input.fromNullable(email))).await()
+                    apolloClient(requireContext()).mutate(LoginMutation(email))
                 } catch (e: Exception) {
                     null
                 }

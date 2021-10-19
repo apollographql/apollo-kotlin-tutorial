@@ -1,11 +1,15 @@
 package com.example.rocketreserver
 
 import android.content.Context
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloRequest
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Operation
+import com.apollographql.apollo3.api.http.httpHeader
+import com.apollographql.apollo3.interceptor.ApolloInterceptor
+import com.apollographql.apollo3.interceptor.ApolloInterceptorChain
+import com.apollographql.apollo3.network.ws.WebSocketNetworkTransport
+import kotlinx.coroutines.flow.Flow
 
 private var instance: ApolloClient? = null
 
@@ -14,25 +18,23 @@ fun apolloClient(context: Context): ApolloClient {
         return instance!!
     }
 
-    val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(AuthorizationInterceptor(context))
-        .build()
-
-    instance = ApolloClient.builder()
+    instance = ApolloClient.Builder()
         .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
-        .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss://apollo-fullstack-tutorial.herokuapp.com/graphql", okHttpClient))
-        .okHttpClient(okHttpClient)
+        .subscriptionNetworkTransport(WebSocketNetworkTransport("wss://apollo-fullstack-tutorial.herokuapp.com/graphql"))
+        .addInterceptor(AuthorizationInterceptor(context))
         .build()
 
     return instance!!
 }
 
-private class AuthorizationInterceptor(val context: Context) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder()
-            .addHeader("Authorization", User.getToken(context) ?: "")
+private class AuthorizationInterceptor(val context: Context) : ApolloInterceptor {
+    override fun <D : Operation.Data> intercept(
+        request: ApolloRequest<D>,
+        chain: ApolloInterceptorChain
+    ): Flow<ApolloResponse<D>> {
+        val requestWithHeader = request.newBuilder()
+            .httpHeader("Authorization", User.getToken(context) ?: "")
             .build()
-
-        return chain.proceed(request)
+        return chain.proceed(requestWithHeader)
     }
 }

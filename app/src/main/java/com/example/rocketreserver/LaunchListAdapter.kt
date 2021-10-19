@@ -24,7 +24,7 @@ class LaunchListAdapter(private val launches: List<LaunchListQuery.Launch>) :
     var onItemClicked: ((LaunchListQuery.Launch) -> Unit)? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val launch = launches.get(position)
+        val launch = launches[position]
         holder.binding.site.text = launch.site ?: ""
         holder.binding.missionName.text = launch.mission?.name
         holder.binding.missionPatch.load(launch.mission?.missionPatch) {

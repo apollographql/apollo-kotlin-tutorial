@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo").version("2.5.9")
+    id("com.apollographql.apollo3").version("3.0.0-alpha08-SNAPSHOT")
 }
 
 android {
@@ -36,8 +36,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
-    implementation("com.apollographql.apollo:apollo-runtime:2.5.9")
-    implementation("com.apollographql.apollo:apollo-coroutines-support:2.5.9")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("io.coil-kt:coil:1.4.0")
@@ -50,8 +48,10 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    implementation("com.apollographql.apollo3:apollo-runtime:3.0.0-alpha08-SNAPSHOT")
 }
 
 apollo {
-    generateKotlinModels.set(true)
+    packageName.set("com.example.rocketreserver")
 }
