@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.api.load
-import com.apollographql.apollo.coroutines.await
-import com.apollographql.apollo.exception.ApolloException
+import coil.load
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.rocketreserver.databinding.LaunchDetailsFragmentBinding
 
 class LaunchDetailsFragment : Fragment() {
@@ -34,7 +33,7 @@ class LaunchDetailsFragment : Fragment() {
             binding.error.visibility = View.GONE
 
             val response = try {
-                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId)).await()
+                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId))
             } catch (e: ApolloException) {
                 binding.progressBar.visibility = View.GONE
                 binding.error.text = "Oh no... A protocol error happened"
@@ -93,7 +92,7 @@ class LaunchDetailsFragment : Fragment() {
                 }
 
                 val response = try {
-                    apolloClient(requireContext()).mutate(mutation).await()
+                    apolloClient(requireContext()).mutate(mutation)
                 } catch (e: ApolloException) {
                     configureButton(isBooked)
                     return@launchWhenResumed

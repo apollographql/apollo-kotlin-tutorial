@@ -1,8 +1,10 @@
 package com.example.rocketreserver
 
 import android.content.Context
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.http.HttpNetworkTransport
+import com.apollographql.apollo3.network.ws.DefaultWebSocketEngine
+import com.apollographql.apollo3.network.ws.WebSocketNetworkTransport
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -18,10 +20,19 @@ fun apolloClient(context: Context): ApolloClient {
         .addInterceptor(AuthorizationInterceptor(context))
         .build()
 
-    instance = ApolloClient.builder()
-        .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
-        .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss://apollo-fullstack-tutorial.herokuapp.com/graphql", okHttpClient))
-        .okHttpClient(okHttpClient)
+    instance = ApolloClient.Builder()
+        .networkTransport(
+            HttpNetworkTransport(
+                serverUrl = "https://apollo-fullstack-tutorial.herokuapp.com/graphql",
+                okHttpClient = okHttpClient
+            )
+        )
+        .subscriptionNetworkTransport(
+            WebSocketNetworkTransport(
+                serverUrl = "wss://apollo-fullstack-tutorial.herokuapp.com/graphql",
+                webSocketEngine = DefaultWebSocketEngine(okHttpClient)
+            )
+        )
         .build()
 
     return instance!!
