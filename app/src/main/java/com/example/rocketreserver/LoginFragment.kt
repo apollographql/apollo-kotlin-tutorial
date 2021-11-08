@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
             binding.submit.visibility = View.GONE
             lifecycleScope.launchWhenResumed {
                 val response = try {
-                    apolloClient(requireContext()).mutate(LoginMutation(email))
+                    apolloClient(requireContext()).mutate(LoginMutation(email)).execute()
                 } catch (e: Exception) {
                     null
                 }
