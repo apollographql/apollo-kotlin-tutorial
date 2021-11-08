@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.0.0-beta03")
+    id("com.apollographql.apollo3").version("3.0.0-beta04")
 }
 
 android {

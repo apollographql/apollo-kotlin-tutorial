@@ -21,18 +21,9 @@ fun apolloClient(context: Context): ApolloClient {
         .build()
 
     instance = ApolloClient.Builder()
-        .networkTransport(
-            HttpNetworkTransport(
-                serverUrl = "https://apollo-fullstack-tutorial.herokuapp.com/graphql",
-                okHttpClient = okHttpClient
-            )
-        )
-        .subscriptionNetworkTransport(
-            WebSocketNetworkTransport(
-                serverUrl = "wss://apollo-fullstack-tutorial.herokuapp.com/graphql",
-                webSocketEngine = DefaultWebSocketEngine(okHttpClient)
-            )
-        )
+        .okHttpClient(okHttpClient)
+        .httpServerUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
+        .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
         .build()
 
     return instance!!
