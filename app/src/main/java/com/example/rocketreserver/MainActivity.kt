@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
-            apolloClient(this@MainActivity).subscribe(TripsBookedSubscription()).execute()
+            apolloClient(this@MainActivity).subscription(TripsBookedSubscription()).toFlow()
                 .retryWhen { _, attempt ->
                     delay(attempt * 1000)
                     true
