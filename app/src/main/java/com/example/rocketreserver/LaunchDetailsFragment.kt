@@ -92,7 +92,7 @@ class LaunchDetailsFragment : Fragment() {
                 }
 
                 val response = try {
-                    apolloClient(requireContext()).mutate(mutation).execute()
+                    apolloClient(requireContext()).mutation(mutation).execute()
                 } catch (e: ApolloException) {
                     configureButton(isBooked)
                     return@launchWhenResumed
