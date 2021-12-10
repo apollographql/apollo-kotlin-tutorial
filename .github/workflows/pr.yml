@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tests-gradle:
+  build-app:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
