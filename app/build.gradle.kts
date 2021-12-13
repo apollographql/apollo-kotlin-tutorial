@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.0.0-rc02")
+    id("com.apollographql.apollo3").version("3.0.0-rc03")
 }
 
 android {
@@ -49,7 +49,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("com.apollographql.apollo3:apollo-runtime:3.0.0-rc02")
+    implementation("com.apollographql.apollo3:apollo-runtime:3.0.0-rc03")
 }
 
 apollo {
