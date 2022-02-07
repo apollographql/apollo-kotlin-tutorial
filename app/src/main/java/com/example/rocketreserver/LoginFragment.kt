@@ -42,14 +42,14 @@ class LoginFragment : Fragment() {
                     null
                 }
 
-                val login = response?.data?.login
-                if (login == null || response.hasErrors()) {
+                val token = response?.data?.login?.token
+                if (token == null || response.hasErrors()) {
                     binding.submitProgressBar.visibility = View.GONE
                     binding.submit.visibility = View.VISIBLE
                     return@launchWhenResumed
                 }
 
-                User.setToken(requireContext(), login.token!!)
+                User.setToken(requireContext(), token)
                 findNavController().popBackStack()
             }
         }
