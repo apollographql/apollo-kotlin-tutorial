@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
                     return@launchWhenResumed
                 }
 
-                User.setToken(requireContext(), login)
+                User.setToken(requireContext(), login.token!!)
                 findNavController().popBackStack()
             }
         }
