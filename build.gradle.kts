@@ -2,7 +2,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        //maven("https://s01.oss.sonatype.org/content/repositories/comapollographql-1006")
     }
 
     dependencies {
@@ -16,7 +15,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        //maven("https://s01.oss.sonatype.org/content/repositories/comapollographql-1006")
     }
 }
 
