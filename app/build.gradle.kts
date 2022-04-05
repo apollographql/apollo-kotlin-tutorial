@@ -2,16 +2,16 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.2.0")
+    id("com.apollographql.apollo3").version("3.2.1")
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "com.example.rocketreserver"
-        minSdkVersion(23)
-        targetSdkVersion(31)
+        minSdk = 23
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
     }
@@ -49,7 +49,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("com.apollographql.apollo3:apollo-runtime:3.2.0")
+    implementation("com.apollographql.apollo3:apollo-runtime:3.2.1")
 }
 
 apollo {
