@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "com.example.rocketreserver"
-        minSdkVersion(23)
-        targetSdkVersion(31)
+        minSdk = 23
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
     }
