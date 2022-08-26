@@ -72,6 +72,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
+
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
     implementation("com.apollographql.apollo3:apollo-normalized-cache:3.5.0")
 
