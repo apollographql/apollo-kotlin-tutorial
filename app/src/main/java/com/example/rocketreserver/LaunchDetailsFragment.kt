@@ -33,7 +33,7 @@ class LaunchDetailsFragment : Fragment() {
             binding.error.visibility = View.GONE
 
             val response = try {
-                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId)).execute()
+                apolloClient.query(LaunchDetailsQuery(id = args.launchId)).execute()
             } catch (e: ApolloException) {
                 binding.progressBar.visibility = View.GONE
                 binding.error.text = "Oh no... A protocol error happened"

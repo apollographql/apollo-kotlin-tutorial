@@ -30,13 +30,16 @@ class LaunchListAdapter(private val launches: List<LaunchListQuery.Launch>) :
         holder.binding.missionPatch.load(launch.mission?.missionPatch) {
             placeholder(R.drawable.ic_placeholder)
         }
-
-        if (position == launches.size - 1) {
-            onEndOfListReached?.invoke()
-        }
-
         holder.binding.root.setOnClickListener {
             onItemClicked?.invoke(launch)
+
+            if (position == launches.size - 1) {
+                onEndOfListReached?.invoke()
+            }
+
+            holder.binding.root.setOnClickListener {
+                onItemClicked?.invoke(launch)
+            }
         }
     }
 }

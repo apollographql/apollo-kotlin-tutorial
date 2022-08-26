@@ -29,6 +29,11 @@ class LaunchListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenResumed {
+            val response = apolloClient.query(LaunchListQuery()).execute()
+            Log.d("LaunchList", "Success ${response.data}")
+        }
+
         val launches = mutableListOf<LaunchListQuery.Launch>()
         val adapter = LaunchListAdapter(launches)
         binding.launches.layoutManager = LinearLayoutManager(requireContext())
@@ -46,8 +51,7 @@ class LaunchListFragment : Fragment() {
             var cursor: String? = null
             for (item in channel) {
                 val response = try {
-                    apolloClient(requireContext()).query(LaunchListQuery(Optional.Present(cursor)))
-                        .execute()
+                    apolloClient.query(LaunchListQuery(Optional.Present(cursor))).execute()
                 } catch (e: ApolloException) {
                     Log.d("LaunchList", "Failure", e)
                     return@launchWhenResumed

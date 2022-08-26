@@ -25,18 +25,28 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.submitProgressBar.visibility = View.GONE
-        binding.submit.setOnClickListener {
-            val email = binding.email.text.toString()
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.emailLayout.error = getString(R.string.invalid_email)
-                return@setOnClickListener
+        binding.submitProgressBar.visibility = View.VISIBLE
+        binding.submit.visibility = View.GONE
+        lifecycleScope.launchWhenResumed {
+            val response = try {
+                val email = "email"
+                apolloClient.mutation(LoginMutation(email = email)).execute()
+            } catch (e: Exception) {
+                null
+            }
+
+            val token = response?.data?.login?.token
+            if (token == null || response.hasErrors()) {
+                binding.submitProgressBar.visibility = View.GONE
+                binding.submit.visibility = View.VISIBLE
+                return@launchWhenResumed
             }
 
             binding.submitProgressBar.visibility = View.VISIBLE
             binding.submit.visibility = View.GONE
             lifecycleScope.launchWhenResumed {
                 val response = try {
+                    val email = "email"
                     apolloClient(requireContext()).mutation(LoginMutation(email)).execute()
                 } catch (e: Exception) {
                     null
