@@ -1,6 +1,6 @@
 // tell Compose to remember our state across recompositions
 val state = remember {
-    // our state will be of type UiState and default to the Loading state
+    // our state will be of type com.example.rocketreserver.UiState and default to the Loading state
     mutableStateOf<UiState>(UiState.Loading)
 }
 
@@ -20,6 +20,6 @@ LaunchTask {
     }
 }
 
-// Display the UiState
+// Display the com.example.rocketreserver.UiState
 when (val value = state.value) {
     is UiState.Success -> LaunchList(launchList = value.launchList)
