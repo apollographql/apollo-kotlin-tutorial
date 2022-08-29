@@ -1,12 +1,15 @@
+package com.example.rocketreserver
+
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.apollographql.apollo3.cache.normalized.watch
-import com.example.rocketreserver.LaunchListBlogQuery
-import com.example.rocketreserver.apolloClient
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 
 sealed class UiState {
     object Loading : UiState()
@@ -15,7 +18,7 @@ sealed class UiState {
 }
 
 @Composable
-fun ApolloLaunchList(launchList: List<LaunchListBlogQuery.Launch>) {
+fun LaunchList() {
 
     val context = LocalContext.current
     // tell Compose to remember our state across recompositions
@@ -42,9 +45,18 @@ fun ApolloLaunchList(launchList: List<LaunchListBlogQuery.Launch>) {
 // collectAsState will turn our flow into State that can be consumed by Composables
         .collectAsState(initial = UiState.Loading)
 
-// Display the UiState as usual
+// Display the com.example.rocketreserver.UiState as usual
     when (val value = state.value) {
-        is UiState.Success -> ApolloLaunchList(launchList = value.launchList)
+        is UiState.Success -> LazyColumn(content = {
+            items(value.launchList) {
+                LaunchItem(it)
+            }
+        })
         else -> {}
     }
+}
+
+@Composable
+fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
+    Text(text = launch.mission?.name ?: "")
 }
