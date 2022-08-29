@@ -10,5 +10,4 @@
     <string name="tripBooked">%1$d trip(s) has(have) been booked 🚀🚀</string>
     <string name="tripCancelled">A trip has been cancelled</string>
     <string name="subscriptionError">Oops, something wrong happened</string>
-    <string name="title_activity_main2">MainActivity2</string>
 </resources>
