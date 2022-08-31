@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
         lifecycleScope.launchWhenResumed {
             val response = try {
                 val email = "email"
-                apolloClient.mutation(LoginMutation(email = email)).execute()
+                apolloClient(requireContext()).mutation(LoginMutation(email = email)).execute()
             } catch (e: Exception) {
                 null
             }
