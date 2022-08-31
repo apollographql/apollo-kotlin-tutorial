@@ -3,7 +3,10 @@ mutation BookTrip($id:ID!) {
     success
     message
     launches {
+      # The id is required here to lookup the correct entry in cache
       id
+      # This will be written in cache and trigger an update in any watcher that is subscribed to this launch
+      isBooked
     }
   }
 }
