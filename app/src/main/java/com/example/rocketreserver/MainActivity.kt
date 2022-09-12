@@ -3,6 +3,7 @@ package com.example.rocketreserver
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.collectAsState
@@ -15,13 +16,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.apollographql.apollo3.exception.ApolloException
 import androidx.compose.runtime.Composable as Composable
 
 class MainActivity : AppCompatActivity() {
@@ -80,8 +81,13 @@ fun LaunchList() {
 @Composable
 fun BookButton() {
     val context = LocalContext.current
+//    val bookTrip = (blah())
     Button( onClick= {
-    // add click handler for BookTrip mutation
+//        try {
+//            val response = apolloClient().mutation(BookTripMutation(blah)).execute()
+//        } catch (e: ApolloException) {
+//            // handle exception
+//        }
     }) {
         Text("Book")
     }
@@ -91,13 +97,16 @@ fun BookButton() {
 @Composable
 fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
     Row() {
-        AsyncImage(
-            modifier = Modifier
-                .width(80.dp)
-                .height(80.dp),
-            model = launch.mission?.missionPatch, contentDescription = null,
-            contentScale = ContentScale.Fit
-        )
+        Column () {
+            AsyncImage(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                model = launch.mission?.missionPatch, contentDescription = null,
+                contentScale = ContentScale.Fit
+            )
+        }
         Column() {
             Text(
                 text = launch.mission?.name ?: "",
@@ -106,7 +115,7 @@ fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .padding(horizontal = 6.dp, vertical = 8.dp)
             )
             Text(
                 text = launch.site ?: "",
@@ -117,20 +126,13 @@ fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 12.dp)
             )
-
+            BookButton()
+         }
         }
-        }
-    Column(
-        modifier = Modifier,
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.End
-    ) {
-        BookButton()
-    }
       }
 
     // @TODO
-    // add a button for booking a trip
+    // wire up button with mutation  for booking a trip
 
 
 
