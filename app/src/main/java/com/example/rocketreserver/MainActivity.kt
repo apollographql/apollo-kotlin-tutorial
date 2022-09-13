@@ -3,7 +3,6 @@ package com.example.rocketreserver
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.collectAsState
@@ -23,7 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.exception.ApolloException
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable as Composable
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,17 +81,17 @@ fun LaunchList() {
 }
 
 @Composable
-fun BookButton() {
+fun BookButton(id: String, booked: Boolean) {
     val context = LocalContext.current
-//    val bookTrip = (blah())
     Button( onClick= {
-//        try {
-//            val response = apolloClient().mutation(BookTripMutation(blah)).execute()
-//        } catch (e: ApolloException) {
-//            // handle exception
-//        }
+        try {
+            val response = GlobalScope.launch {
+                apolloClient(context).mutation(BookTripMutation(id)).execute() }
+        } catch (e: ApolloException) {
+            // handle exception
+        }
     }) {
-        Text("Book")
+        Text(if(booked) "Cancel" else "Book")
     }
 }
 
@@ -126,7 +128,7 @@ fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 12.dp)
             )
-            BookButton()
+            BookButton(launch.id, launch.isBooked )
          }
         }
       }
