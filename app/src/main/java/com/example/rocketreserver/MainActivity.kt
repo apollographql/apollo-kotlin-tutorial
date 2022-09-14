@@ -46,7 +46,6 @@ sealed class UiState {
 
 @Composable
 fun LaunchList() {
-
     val context = LocalContext.current
     // tell Compose to remember our state across recompositions
     val state = remember {
@@ -55,7 +54,7 @@ fun LaunchList() {
                 val launchList = it
                     .data
                     ?.launchConnection
-                    ?.launches    
+                    ?.launches
                     ?.filterNotNull()
                 if (launchList == null) {
                     // There were some error
@@ -69,10 +68,10 @@ fun LaunchList() {
                 emit(UiState.Error)
             }
     }
-// collectAsState will turn our flow into State that can be consumed by Composables
+        // collectAsState will turn our flow into State that can be consumed by Composables
         .collectAsState(initial = UiState.Loading)
 
-// Display the com.example.rocketreserver.UiState as usual
+    // Display the com.example.rocketreserver.UiState as usual
     when (val value = state.value) {
         is UiState.Success -> LazyColumn(content = {
             items(value.launchList) {
@@ -119,8 +118,8 @@ fun BookButton(id: String, booked: Boolean) {
 
 @Composable
 fun LaunchItem(launch: LaunchListQuery.Launch) {
-    Row() {
-        Column() {
+    Row {
+        Column {
             AsyncImage(
                 modifier = Modifier
                     .width(100.dp)
@@ -130,7 +129,7 @@ fun LaunchItem(launch: LaunchListQuery.Launch) {
                 contentScale = ContentScale.Fit
             )
         }
-        Column() {
+        Column {
             Text(
                 text = launch.mission?.name ?: "",
                 fontWeight = FontWeight.Bold,
