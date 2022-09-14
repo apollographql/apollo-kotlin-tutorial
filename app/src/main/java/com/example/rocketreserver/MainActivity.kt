@@ -88,7 +88,7 @@ fun BookButton(id: String, booked: Boolean) {
             val response = GlobalScope.launch {
                 apolloClient(context).mutation(BookTripMutation(id)).execute() }
         } catch (e: ApolloException) {
-            // handle exception
+            // handle exception for a server failure
         }
     }) {
         Text(if(booked) "Cancel" else "Book")
@@ -134,7 +134,7 @@ fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
       }
 
     // @TODO
-    // wire up button with mutation  for booking a trip
+    // handle server errors on button click
 
 
 
