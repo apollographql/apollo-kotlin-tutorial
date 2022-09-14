@@ -83,40 +83,6 @@ fun LaunchList() {
 }
 
 @Composable
-fun BookButton(id: String, booked: Boolean) {
-    val context = LocalContext.current
-    Button(onClick = {
-
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                try {
-                    val mutation = if (booked) {
-                        CancelTripMutation(id)
-                    } else {
-                        BookTripMutation(id)
-                    }
-                    val response = apolloClient(context).mutation(mutation).execute()
-                    if (response.hasErrors()) {
-                        val text = response.errors!!.first().message
-                        val duration = Toast.LENGTH_SHORT
-                        val toast = Toast.makeText(context, text, duration)
-                        toast.show()
-                    }
-                } catch (e: ApolloException) {
-                    val text = e.message
-                    val duration = Toast.LENGTH_SHORT
-                    val toast = Toast.makeText(context, text, duration)
-                    toast.show()
-                }
-            }
-        }
-    }) {
-        Text(if (booked) "Cancel" else "Book")
-    }
-}
-
-
-@Composable
 fun LaunchItem(launch: LaunchListQuery.Launch) {
     Row {
         Column {
@@ -153,5 +119,37 @@ fun LaunchItem(launch: LaunchListQuery.Launch) {
     }
 }
 
+@Composable
+fun BookButton(id: String, booked: Boolean) {
+    val context = LocalContext.current
+    Button(onClick = {
+
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                try {
+                    val mutation = if (booked) {
+                        CancelTripMutation(id)
+                    } else {
+                        BookTripMutation(id)
+                    }
+                    val response = apolloClient(context).mutation(mutation).execute()
+                    if (response.hasErrors()) {
+                        val text = response.errors!!.first().message
+                        val duration = Toast.LENGTH_SHORT
+                        val toast = Toast.makeText(context, text, duration)
+                        toast.show()
+                    }
+                } catch (e: ApolloException) {
+                    val text = e.message
+                    val duration = Toast.LENGTH_SHORT
+                    val toast = Toast.makeText(context, text, duration)
+                    toast.show()
+                }
+            }
+        }
+    }) {
+        Text(if (booked) "Cancel" else "Book")
+    }
+}
 
 
