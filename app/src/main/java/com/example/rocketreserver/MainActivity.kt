@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 sealed class UiState {
     object Loading : UiState()
     object Error : UiState()
-    class Success(val launchList: List<LaunchListBlogQuery.Launch>) : UiState()
+    class Success(val launchList: List<LaunchListQuery.Launch>) : UiState()
 }
 
 @Composable
@@ -50,12 +50,12 @@ fun LaunchList() {
     val context = LocalContext.current
     // tell Compose to remember our state across recompositions
     val state = remember {
-        apolloClient(context).query(LaunchListBlogQuery()).watch()
+        apolloClient(context).query(LaunchListQuery()).watch()
             .map {
                 val launchList = it
                     .data
                     ?.launchConnection
-                    ?.launches
+                    ?.launches    
                     ?.filterNotNull()
                 if (launchList == null) {
                     // There were some error
@@ -118,7 +118,7 @@ fun BookButton(id: String, booked: Boolean) {
 
 
 @Composable
-fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
+fun LaunchItem(launch: LaunchListQuery.Launch) {
     Row() {
         Column() {
             AsyncImage(

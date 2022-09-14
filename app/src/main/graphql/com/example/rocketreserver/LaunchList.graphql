@@ -1,10 +1,9 @@
-query LaunchList($cursor: String) {
-  launches(after: $cursor) {
-    cursor
-    hasMore
+query LaunchList {
+  launchConnection: launches {
     launches {
       id
       site
+      isBooked
       mission {
         name
         missionPatch(size: SMALL)
