@@ -21,7 +21,7 @@ type LaunchConnection {
   launches: [Launch]!
 }
 
-type Launch {
+type Launch @typePolicy(keyFields:"id") {
   id: ID!
 
   site: String

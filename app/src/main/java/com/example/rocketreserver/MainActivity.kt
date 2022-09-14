@@ -1,6 +1,7 @@
 package com.example.rocketreserver
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
@@ -22,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.exception.ApolloException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.runtime.Composable as Composable
 
 
@@ -83,15 +86,33 @@ fun LaunchList() {
 @Composable
 fun BookButton(id: String, booked: Boolean) {
     val context = LocalContext.current
-    Button( onClick= {
-        try {
-            val response = GlobalScope.launch {
-                apolloClient(context).mutation(BookTripMutation(id)).execute() }
-        } catch (e: ApolloException) {
-            // handle exception for a server failure
+    Button(onClick = {
+
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                try {
+                    val mutation = if (booked) {
+                        CancelTripMutation(id)
+                    } else {
+                        BookTripMutation(id)
+                    }
+                    val response = apolloClient(context).mutation(mutation).execute()
+                    if (response.hasErrors()) {
+                        val text = response.errors!!.first().message
+                        val duration = Toast.LENGTH_SHORT
+                        val toast = Toast.makeText(context, text, duration)
+                        toast.show()
+                    }
+                } catch (e: ApolloException) {
+                    val text = e.message
+                    val duration = Toast.LENGTH_SHORT
+                    val toast = Toast.makeText(context, text, duration)
+                    toast.show()
+                }
+            }
         }
     }) {
-        Text(if(booked) "Cancel" else "Book")
+        Text(if (booked) "Cancel" else "Book")
     }
 }
 
@@ -99,7 +120,7 @@ fun BookButton(id: String, booked: Boolean) {
 @Composable
 fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
     Row() {
-        Column () {
+        Column() {
             AsyncImage(
                 modifier = Modifier
                     .width(100.dp)
@@ -128,13 +149,10 @@ fun LaunchItem(launch: LaunchListBlogQuery.Launch) {
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 12.dp)
             )
-            BookButton(launch.id, launch.isBooked )
-         }
+            BookButton(launch.id, launch.isBooked)
         }
-      }
-
-    // @TODO
-    // handle server errors on button click
+    }
+}
 
 
 
