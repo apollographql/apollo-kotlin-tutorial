@@ -47,8 +47,8 @@ sealed class UiState {
 @Composable
 fun LaunchList() {
     val context = LocalContext.current
-    // tell Compose to remember our state across recompositions
-    val state = remember {
+    // tell Compose to remember the flow across recompositions
+    val flow = remember {
         apolloClient(context).query(LaunchListQuery()).watch()
             .map {
                 val launchList = it
@@ -68,10 +68,11 @@ fun LaunchList() {
                 emit(UiState.Error)
             }
     }
-        // collectAsState will turn our flow into State that can be consumed by Composables
-        .collectAsState(initial = UiState.Loading)
 
-    // Display the com.example.rocketreserver.UiState as usual
+    // collectAsState will turn our Flow into state that can be consumed by Composables
+    val state = flow.collectAsState(initial = UiState.Loading)
+
+    // Display state
     when (val value = state.value) {
         is UiState.Success -> LazyColumn(content = {
             items(value.launchList) {
