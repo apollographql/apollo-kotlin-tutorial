@@ -56,5 +56,7 @@ dependencies {
 }
 
 apollo {
-    packageName.set("com.example.rocketreserver")
+    service("rocketreserver") {
+        packageName.set("com.example.rocketreserver")
+    }
 }

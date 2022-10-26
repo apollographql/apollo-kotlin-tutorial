@@ -27,6 +27,8 @@ dependencies {
 }
 
 apollo {
-    generateApolloMetadata.set(true)
-    packageName.set("com.example.rocketreserver")
+    service ("rocketreserver") {
+        generateApolloMetadata.set(true)
+        packageName.set("com.example.rocketreserver")
+    }
 }
