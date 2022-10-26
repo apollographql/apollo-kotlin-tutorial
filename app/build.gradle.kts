@@ -50,6 +50,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     implementation("com.apollographql.apollo3:apollo-runtime")
+
+    implementation(project(":base"))
+    apolloMetadata(project(":base"))
 }
 
 apollo {
