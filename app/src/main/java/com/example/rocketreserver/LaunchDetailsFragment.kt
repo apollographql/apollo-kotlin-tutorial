@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.apollographql.apollo3.cache.http.HttpFetchPolicy
+import com.apollographql.apollo3.cache.http.httpFetchPolicy
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.rocketreserver.databinding.LaunchDetailsFragmentBinding
 
@@ -33,7 +35,8 @@ class LaunchDetailsFragment : Fragment() {
             binding.error.visibility = View.GONE
 
             val response = try {
-                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId)).execute()
+                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId))
+                    .httpFetchPolicy(HttpFetchPolicy.CacheFirst).execute()
             } catch (e: ApolloException) {
                 binding.progressBar.visibility = View.GONE
                 binding.error.text = "Oh no... A protocol error happened"
