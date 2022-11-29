@@ -21,6 +21,7 @@ fun apolloClient(context: Context): ApolloClient {
         .build()
 
     //val cacheFactory = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
+    val cacheSize: Long = 50 * 1024 * 1024
 
     instance = ApolloClient.Builder()
         .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
@@ -28,13 +29,13 @@ fun apolloClient(context: Context): ApolloClient {
         .okHttpClient(okHttpClient)
         .httpCache(
             directory = File(context.cacheDir.absolutePath, "apolloCache"),
-            maxSize = 50 * 1024 * 1024
+            maxSize = cacheSize
         )
         .httpExpireTimeout(1000 * 1000) // can be updated
-        .addHttpInterceptor(CachingHttpInterceptor(
-            directory = File(context.cacheDir.absolutePath, "apolloCache"),
-            maxSize = 50 * 1024 * 1024
-        ))
+//        .addHttpInterceptor(CachingHttpInterceptor(
+//            directory = File(context.cacheDir.absolutePath, "apolloCache"),
+//            maxSize = cacheSize
+//        ))
         .build()
 
     return instance!!
