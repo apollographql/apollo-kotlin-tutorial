@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.7.1")
+    id("com.apollographql.apollo3").version("3.7.2")
 }
 
 android {
@@ -24,10 +24,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-//    compileOptions {
-//        // Flag to enable support for the new language APIs
-//        isCoreLibraryDesugaringEnabled = true
-//    }
     namespace = "com.example.rocketreserver"
 }
 
@@ -55,17 +51,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
 
     implementation("com.apollographql.apollo3:apollo-runtime")
-    implementation("com.apollographql.apollo3:apollo-http-cache:3.7.1")
-
-//    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.1") // for memory cache
-//    implementation("com.apollographql.apollo3:apollo-normalized-cache-sqlite:3.7.1") // for SQL cache
-
-//    // define a BOM and its version
-//    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
-//
-//    // define any required OkHttp artifacts without version
-//    implementation("com.squareup.okhttp3:okhttp")
-//    implementation("com.squareup.okhttp3:logging-interceptor")
 }
 
 apollo {
