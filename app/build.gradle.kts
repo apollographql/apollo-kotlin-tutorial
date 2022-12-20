@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.7.2")
+    id("com.apollographql.apollo3").version("3.7.3")
 }
 
 android {
@@ -54,5 +54,7 @@ dependencies {
 }
 
 apollo {
-    packageName.set("com.example.rocketreserver")
+    service("service") {
+        packageName.set("com.example.rocketreserver")
+    }
 }
