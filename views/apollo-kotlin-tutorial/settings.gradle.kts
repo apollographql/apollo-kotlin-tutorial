@@ -1,4 +1,4 @@
-rootProject.name = "apollo-kotlin-tutorial"
+rootProject.name="apollo-android-tutorial"
 include(":app")
 
 pluginManagement {
