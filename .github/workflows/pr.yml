@@ -18,6 +18,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 11
-      - name: Build with Gradle
+      - name: Build current tutorial
+        working-directory: ./compose/finished
+        run: |
+          ./gradlew assembleDebug
+      - name: Build legacy tutorial
+        working-directory: ./views/apollo-kotlin-tutorial
         run: |
           ./gradlew assembleDebug
