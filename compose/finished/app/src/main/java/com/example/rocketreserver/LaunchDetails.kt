@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
-import com.example.rocketreserver.LaunchDetailsState.BackendError
+import com.example.rocketreserver.LaunchDetailsState.ApplicationError
 import com.example.rocketreserver.LaunchDetailsState.Loading
 import com.example.rocketreserver.LaunchDetailsState.ProtocolError
 import com.example.rocketreserver.LaunchDetailsState.Success
@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 private sealed interface LaunchDetailsState {
     object Loading : LaunchDetailsState
     data class ProtocolError(val exception: ApolloException) : LaunchDetailsState
-    data class BackendError(val errors: List<Error>) : LaunchDetailsState
+    data class ApplicationError(val errors: List<Error>) : LaunchDetailsState
     data class Success(val data: LaunchDetailsQuery.Data) : LaunchDetailsState
 }
 
@@ -49,7 +49,7 @@ fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
         state = try {
             val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
             if (response.hasErrors()) {
-                BackendError(response.errors!!)
+                ApplicationError(response.errors!!)
             } else {
                 Success(response.data!!)
             }
@@ -60,7 +60,7 @@ fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
     when (val s = state) {
         Loading -> Loading()
         is ProtocolError -> ErrorMessage("Oh no... A protocol error happened: ${s.exception.message}")
-        is BackendError -> ErrorMessage(s.errors[0].message)
+        is ApplicationError -> ErrorMessage(s.errors[0].message)
         is Success -> LaunchDetails(s.data, navigateToLogin)
     }
 }
