@@ -23,6 +23,6 @@ jobs:
         run: |
           ./gradlew assembleDebug
       - name: Build legacy tutorial
-        working-directory: ./views/apollo-kotlin-tutorial
+        working-directory: ./views/finished
         run: |
           ./gradlew assembleDebug
