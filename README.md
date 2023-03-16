@@ -1,12 +1,10 @@
 # Apollo Kotlin Tutorial
 
-This is the tutorial application for working with the [Apollo Kotlin SDK](https://github.com/apollographql/apollo-kotlin).
+Repository for the [Apollo Kotlin](https://github.com/apollographql/apollo-kotlin) tutorial.
 
-The tutorial is available through our documentation site: [Android Tutorial](https://www.apollographql.com/docs/kotlin/tutorial/00-introduction/).
+The tutorial is available through our [documentation site](https://www.apollographql.com/docs/kotlin/tutorial/00-introduction/). This repository contains the corresponding code.
 
-For copy errors in the tutorial, please file bugs against the main [`apollo-android` repo](https://github.com/apollographql/apollo-kotlin). For broken code, please file issues on this repo.
+* [compose](./compose) (current): using [Jetpack Compose](https://developer.android.com/jetpack/compose)
+* [views](./views) (kept as reference): using the [Android Views](https://developer.android.com/develop/ui/views/layout/declaring-layout) system. This directory is kept as reference but is not maintained anymore.
 
-This repo has two branches:
-
-* [main](https://github.com/apollographql/apollo-kotlin-tutorial/tree/main) is the final state of the application with all functionality
-* [initial](https://github.com/apollographql/apollo-kotlin-tutorial/tree/initial) is the starter project with the boilerplate and UI code already written but no Apollo Kotlin code.
+For copy errors in the tutorial, please file bugs against the main [`apollo-kotlin` repo](https://github.com/apollographql/apollo-kotlin). For broken code, please file issues on this repo.

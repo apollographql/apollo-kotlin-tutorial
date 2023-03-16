@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">RocketReserver</string>
+    <string name="oh_no">Oh no… Something went wrong.</string>
+    <string name="book_now">Book now</string>
+    <string name="cancel">Cancel</string>
+    <string name="login">Log in</string>
+    <string name="email">email</string>
+    <string name="submit">Submit</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="tripBooked">%1$d trip(s) has(have) been booked 🚀🚀</string>
+    <string name="tripCancelled">A trip has been cancelled</string>
+    <string name="subscriptionError">Oops, something wrong happened</string>
+</resources>
