@@ -46,15 +46,19 @@ private sealed interface LaunchDetailsState {
 fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
     var state by remember { mutableStateOf<LaunchDetailsState>(Loading) }
     LaunchedEffect(Unit) {
-        state = try {
-            val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
-            if (response.hasErrors()) {
+        val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
+        state = when {
+            response.exception != null -> {
+                ProtocolError(response.exception!!)
+            }
+
+            response.hasErrors() -> {
                 ApplicationError(response.errors!!)
-            } else {
+            }
+
+            else -> {
                 Success(response.data!!)
             }
-        } catch (e: ApolloException) {
-            ProtocolError(e)
         }
     }
     when (val s = state) {
@@ -150,18 +154,20 @@ private suspend fun onBookButtonClick(launchId: String, isBooked: Boolean, navig
     } else {
         BookTripMutation(id = launchId)
     }
-    val response = try {
-        apolloClient.mutation(mutation).execute()
-    } catch (e: ApolloException) {
-        Log.w("LaunchDetails", "Failed to book/cancel trip", e)
-        return false
-    }
+    val response = apolloClient.mutation(mutation).execute()
+    return when {
+        response.exception != null -> {
+            Log.w("LaunchDetails", "Failed to book/cancel trip", response.exception)
+            false
+        }
 
-    if (response.hasErrors()) {
-        Log.w("LaunchDetails", "Failed to book/cancel trip: ${response.errors?.get(0)?.message}")
-        return false
+        response.hasErrors() -> {
+            Log.w("LaunchDetails", "Failed to book/cancel trip: ${response.errors?.get(0)?.message}")
+            false
+        }
+
+        else -> true
     }
-    return true
 }
 
 @Composable

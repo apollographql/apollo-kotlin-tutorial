@@ -26,7 +26,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apollographql.apollo3.exception.ApolloException
 import kotlinx.coroutines.launch
 
 @Composable
@@ -81,23 +80,28 @@ fun Login(navigateBack: () -> Unit) {
 }
 
 private suspend fun login(email: String): Boolean {
-    val response = try {
-        apolloClient.mutation(LoginMutation(email = email)).execute()
-    } catch (e: ApolloException) {
-        Log.w("Login", "Failed to login", e)
-        return false
+    val response = apolloClient.mutation(LoginMutation(email = email)).execute()
+    return when {
+        response.exception != null -> {
+            Log.w("Login", "Failed to login", response.exception)
+            false
+        }
+
+        response.hasErrors() -> {
+            Log.w("Login", "Failed to login: ${response.errors?.get(0)?.message}")
+            false
+        }
+
+        response.data?.login?.token == null -> {
+            Log.w("Login", "Failed to login: no token returned by the backend")
+            false
+        }
+
+        else -> {
+            TokenRepository.setToken(response.data!!.login!!.token!!)
+            true
+        }
     }
-    if (response.hasErrors()) {
-        Log.w("Login", "Failed to login: ${response.errors?.get(0)?.message}")
-        return false
-    }
-    val token = response.data?.login?.token
-    if (token == null) {
-        Log.w("Login", "Failed to login: no token returned by the backend")
-        return false
-    }
-    TokenRepository.setToken(token)
-    return true
 }
 
 @Composable
