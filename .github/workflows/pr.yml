@@ -19,10 +19,10 @@ jobs:
           distribution: 'temurin'
           java-version: 11
       - name: Build current tutorial
-        working-directory: ./compose/finished
+        working-directory: ./compose/final
         run: |
           ./gradlew assembleDebug
       - name: Build legacy tutorial
-        working-directory: ./views/finished
+        working-directory: ./views/final
         run: |
           ./gradlew assembleDebug
