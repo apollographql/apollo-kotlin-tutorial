@@ -26,3 +26,7 @@ jobs:
         working-directory: ./views/final
         run: |
           ./gradlew assembleDebug
+      - name: Build v4 tutorial
+        working-directory: ./v4/final
+        run: |
+          ./gradlew assembleDebug
