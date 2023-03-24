@@ -1,5 +1,5 @@
-query LaunchList($cursor: String) {
-    launches(after: $cursor) {
+query LaunchList($cursor: String, $pageSize: Int) {
+    launches(after: $cursor, pageSize: $pageSize) {
         cursor
         launches {
             id
