@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Trust user CAs to allow the use of tools like Charles Proxy -->
+    <!-- See https://developer.android.com/training/articles/security-config.html#TrustingDebugCa -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>
