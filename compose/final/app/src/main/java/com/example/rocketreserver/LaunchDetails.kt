@@ -15,7 +15,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,41 +26,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo3.annotations.ApolloExperimental
+import com.apollographql.apollo3.compose.exception
+import com.apollographql.apollo3.compose.toState
 import com.apollographql.apollo3.exception.ApolloException
-import com.example.rocketreserver.LaunchDetailsState.ApplicationError
-import com.example.rocketreserver.LaunchDetailsState.Loading
-import com.example.rocketreserver.LaunchDetailsState.ProtocolError
-import com.example.rocketreserver.LaunchDetailsState.Success
 import kotlinx.coroutines.launch
 
-private sealed interface LaunchDetailsState {
-    object Loading : LaunchDetailsState
-    data class ProtocolError(val exception: ApolloException) : LaunchDetailsState
-    data class ApplicationError(val errors: List<Error>) : LaunchDetailsState
-    data class Success(val data: LaunchDetailsQuery.Data) : LaunchDetailsState
-}
-
+@OptIn(ApolloExperimental::class)
 @Composable
 fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
-    var state by remember { mutableStateOf<LaunchDetailsState>(Loading) }
-    LaunchedEffect(Unit) {
-        state = try {
-            val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
-            if (response.hasErrors()) {
-                ApplicationError(response.errors!!)
-            } else {
-                Success(response.data!!)
-            }
-        } catch (e: ApolloException) {
-            ProtocolError(e)
-        }
-    }
-    when (val s = state) {
-        Loading -> Loading()
-        is ProtocolError -> ErrorMessage("Oh no... A protocol error happened: ${s.exception.message}")
-        is ApplicationError -> ErrorMessage(s.errors[0].message)
-        is Success -> LaunchDetails(s.data, navigateToLogin)
+    val response by apolloClient.query(LaunchDetailsQuery(launchId)).toState()
+    val r = response
+    when {
+        r == null -> Loading()
+        r.exception != null -> ErrorMessage("Oh no... A protocol error happened: ${r.exception!!.message}")
+        r.hasErrors() -> ErrorMessage(r.errors!![0].message)
+        else -> LaunchDetails(r.data!!, navigateToLogin)
     }
 }
 
