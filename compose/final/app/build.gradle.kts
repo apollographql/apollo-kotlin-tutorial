@@ -77,5 +77,6 @@ dependencies {
 apollo {
     service("service") {
         packageName.set("com.example.rocketreserver")
+        generateTestBuilders.set(true)
     }
 }
