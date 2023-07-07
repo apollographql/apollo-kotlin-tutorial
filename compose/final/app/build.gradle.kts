@@ -80,3 +80,12 @@ apollo {
         generateTestBuilders.set(true)
     }
 }
+
+androidComponents {
+    beforeVariants {
+        val testFiles = extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension>()!!.sourceSets!!.getByName("test")!!.kotlin!!.files!!
+        it.enableUnitTest = testFiles.isNotEmpty() == true
+
+        println("${it.name}: $testFiles")
+    }
+}
