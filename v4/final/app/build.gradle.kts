@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.apollographql.apollo3").version("4.0.0-SNAPSHOT")
+    id("com.apollographql.apollo3").version("4.0.0-beta.1")
 }
 
 android {
