@@ -81,25 +81,22 @@ fun Login(navigateBack: () -> Unit) {
 
 private suspend fun login(email: String): Boolean {
     val response = apolloClient.mutation(LoginMutation(email = email)).execute()
-    return when {
-        response.exception != null -> {
-            Log.w("Login", "Failed to login", response.exception)
-            false
-        }
-
-        response.hasErrors() -> {
-            Log.w("Login", "Failed to login: ${response.errors?.get(0)?.message}")
-            false
-        }
-
-        response.data?.login?.token == null -> {
+    val data = response.data
+    return if (data != null) {
+        if (data.login?.token != null) {
+            TokenRepository.setToken(data.login.token)
+            true
+        } else {
             Log.w("Login", "Failed to login: no token returned by the backend")
             false
         }
-
-        else -> {
-            TokenRepository.setToken(response.data!!.login!!.token!!)
-            true
+    } else {
+        if (response.exception != null) {
+            Log.w("Login", "Failed to login", response.exception)
+            false
+        } else {
+            Log.w("Login", "Failed to login: ${response.errors!![0].message}")
+            false
         }
     }
 }
