@@ -71,7 +71,9 @@ private fun LaunchDetails(
     navigateToLogin: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Mission patch
