@@ -47,17 +47,13 @@ fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
     var state by remember { mutableStateOf<LaunchDetailsState>(Loading) }
     LaunchedEffect(Unit) {
         val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
-        state = when {
-            response.exception != null -> {
+        state = if (response.data != null) {
+            Success(response.data!!)
+        } else {
+            if (response.exception != null) {
                 ProtocolError(response.exception!!)
-            }
-
-            response.hasErrors() -> {
+            } else {
                 ApplicationError(response.errors!!)
-            }
-
-            else -> {
-                Success(response.data!!)
             }
         }
     }
@@ -75,7 +71,9 @@ private fun LaunchDetails(
     navigateToLogin: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Mission patch
@@ -144,7 +142,11 @@ private fun LaunchDetails(
     }
 }
 
-private suspend fun onBookButtonClick(launchId: String, isBooked: Boolean, navigateToLogin: () -> Unit): Boolean {
+private suspend fun onBookButtonClick(
+    launchId: String,
+    isBooked: Boolean,
+    navigateToLogin: () -> Unit
+): Boolean {
     if (TokenRepository.getToken() == null) {
         navigateToLogin()
         return false
@@ -155,18 +157,16 @@ private suspend fun onBookButtonClick(launchId: String, isBooked: Boolean, navig
         BookTripMutation(id = launchId)
     }
     val response = apolloClient.mutation(mutation).execute()
-    return when {
-        response.exception != null -> {
+    return if (response.data != null) {
+        true
+    } else {
+        if (response.exception != null) {
             Log.w("LaunchDetails", "Failed to book/cancel trip", response.exception)
             false
-        }
-
-        response.hasErrors() -> {
-            Log.w("LaunchDetails", "Failed to book/cancel trip: ${response.errors?.get(0)?.message}")
+        } else {
+            Log.w("LaunchDetails", "Failed to book/cancel trip: ${response.errors!![0].message}")
             false
         }
-
-        else -> true
     }
 }
 

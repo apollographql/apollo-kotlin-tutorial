@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LaunchDetails(launchId: String) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Mission patch

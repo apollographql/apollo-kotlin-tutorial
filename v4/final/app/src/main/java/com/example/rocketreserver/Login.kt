@@ -4,6 +4,7 @@ package com.example.rocketreserver
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,7 +32,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun Login(navigateBack: () -> Unit) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         // Title
         Text(
@@ -81,25 +84,22 @@ fun Login(navigateBack: () -> Unit) {
 
 private suspend fun login(email: String): Boolean {
     val response = apolloClient.mutation(LoginMutation(email = email)).execute()
-    return when {
-        response.exception != null -> {
-            Log.w("Login", "Failed to login", response.exception)
-            false
-        }
-
-        response.hasErrors() -> {
-            Log.w("Login", "Failed to login: ${response.errors?.get(0)?.message}")
-            false
-        }
-
-        response.data?.login?.token == null -> {
+    val data = response.data
+    return if (data != null) {
+        if (data.login?.token != null) {
+            TokenRepository.setToken(data.login.token)
+            true
+        } else {
             Log.w("Login", "Failed to login: no token returned by the backend")
             false
         }
-
-        else -> {
-            TokenRepository.setToken(response.data!!.login!!.token!!)
-            true
+    } else {
+        if (response.exception != null) {
+            Log.w("Login", "Failed to login", response.exception)
+            false
+        } else {
+            Log.w("Login", "Failed to login: ${response.errors!![0].message}")
+            false
         }
     }
 }

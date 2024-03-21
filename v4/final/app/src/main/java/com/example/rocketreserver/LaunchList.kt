@@ -4,6 +4,7 @@ package com.example.rocketreserver
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,7 +38,7 @@ fun LaunchList(onLaunchClick: (launchId: String) -> Unit) {
         launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
     }
 
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(launchList) { launch ->
             LaunchItem(launch = launch, onClick = onLaunchClick)
         }
@@ -55,11 +56,11 @@ fun LaunchList(onLaunchClick: (launchId: String) -> Unit) {
 private fun LaunchItem(launch: LaunchListQuery.Launch, onClick: (launchId: String) -> Unit) {
     ListItem(
         modifier = Modifier.clickable { onClick(launch.id) },
-        headlineText = {
+        headlineContent = {
             // Mission name
             Text(text = launch.mission?.name ?: "")
         },
-        supportingText = {
+        supportingContent = {
             // Site
             Text(text = launch.site ?: "")
         },
