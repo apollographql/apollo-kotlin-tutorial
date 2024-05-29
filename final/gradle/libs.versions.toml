@@ -31,7 +31,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
