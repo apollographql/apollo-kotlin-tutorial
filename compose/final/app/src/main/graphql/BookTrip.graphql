@@ -4,6 +4,7 @@ mutation BookTrip($id: ID!) {
         message
         launches {
             id
+            isBooked
         }
     }
 }

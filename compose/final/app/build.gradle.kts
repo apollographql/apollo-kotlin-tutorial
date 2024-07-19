@@ -59,6 +59,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation("com.apollographql.apollo3:apollo-runtime")
+    implementation("com.apollographql.apollo3:apollo-normalized-cache")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

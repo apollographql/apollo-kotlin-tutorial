@@ -28,11 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo3.cache.normalized.watch
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.rocketreserver.LaunchDetailsState.ApplicationError
 import com.example.rocketreserver.LaunchDetailsState.Loading
 import com.example.rocketreserver.LaunchDetailsState.ProtocolError
 import com.example.rocketreserver.LaunchDetailsState.Success
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 private sealed interface LaunchDetailsState {
@@ -46,16 +48,19 @@ private sealed interface LaunchDetailsState {
 fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
     var state by remember { mutableStateOf<LaunchDetailsState>(Loading) }
     LaunchedEffect(Unit) {
-        state = try {
-            val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
-            if (response.hasErrors()) {
-                ApplicationError(response.errors!!)
-            } else {
-                Success(response.data!!)
+        apolloClient.query(LaunchDetailsQuery(launchId)).watch()
+            .catch { e ->
+                if (e is ApolloException) {
+                    state = ProtocolError(e)
+                }
             }
-        } catch (e: ApolloException) {
-            ProtocolError(e)
-        }
+            .collect { response ->
+                state = if (response.hasErrors()) {
+                    ApplicationError(response.errors!!)
+                } else {
+                    Success(response.data!!)
+                }
+            }
     }
     when (val s = state) {
         Loading -> Loading()
@@ -88,6 +93,10 @@ private fun LaunchDetails(
             Spacer(modifier = Modifier.size(16.dp))
 
             Column {
+                val booked = data.launch?.isBooked == true
+                if (booked) {
+                    Text("booked")
+                }
                 // Mission name
                 Text(
                     style = MaterialTheme.typography.headlineMedium,

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.cache.normalized.watch
 
 @Composable
 fun LaunchList(onLaunchClick: (launchId: String) -> Unit) {
@@ -34,8 +35,11 @@ fun LaunchList(onLaunchClick: (launchId: String) -> Unit) {
     var response: ApolloResponse<LaunchListQuery.Data>? by remember { mutableStateOf(null) }
     var launchList by remember { mutableStateOf(emptyList<LaunchListQuery.Launch>()) }
     LaunchedEffect(cursor) {
-        response = apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
-        launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
+        apolloClient.query(LaunchListQuery(Optional.present(cursor))).watch()
+            .collect {
+                response = it
+                launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
+            }
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
