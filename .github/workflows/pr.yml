@@ -18,15 +18,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - name: Build current tutorial
-        working-directory: ./compose/final
-        run: |
-          ./gradlew assembleDebug
-      - name: Build legacy tutorial
-        working-directory: ./views/final
-        run: |
-          ./gradlew assembleDebug
-      - name: Build v4 tutorial
-        working-directory: ./v4/final
+      - name: Build tutorial
+        working-directory: ./final
         run: |
           ./gradlew assembleDebug
