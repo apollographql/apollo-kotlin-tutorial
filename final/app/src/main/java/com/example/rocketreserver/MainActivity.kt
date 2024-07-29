@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo.api.ApolloResponse
 import com.example.rocketreserver.ui.theme.RocketReserverTheme
 
 class MainActivity : ComponentActivity() {

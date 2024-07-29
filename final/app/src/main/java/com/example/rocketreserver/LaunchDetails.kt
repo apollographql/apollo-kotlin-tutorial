@@ -27,8 +27,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.apollographql.apollo3.api.Error
-import com.apollographql.apollo3.exception.ApolloException
+import com.apollographql.apollo.api.Error
+import com.apollographql.apollo.exception.ApolloException
 import com.example.rocketreserver.LaunchDetailsState.ApplicationError
 import com.example.rocketreserver.LaunchDetailsState.Loading
 import com.example.rocketreserver.LaunchDetailsState.ProtocolError
