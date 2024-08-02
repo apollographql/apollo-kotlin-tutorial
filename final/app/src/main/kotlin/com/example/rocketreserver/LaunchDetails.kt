@@ -27,18 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.apollographql.apollo.api.Error
-import com.apollographql.apollo.exception.ApolloException
-import com.example.rocketreserver.LaunchDetailsState.ApplicationError
+import com.apollographql.apollo.exception.ApolloNetworkException
 import com.example.rocketreserver.LaunchDetailsState.Loading
-import com.example.rocketreserver.LaunchDetailsState.ProtocolError
 import com.example.rocketreserver.LaunchDetailsState.Success
+import com.example.rocketreserver.LaunchDetailsState.Error
 import kotlinx.coroutines.launch
 
 private sealed interface LaunchDetailsState {
     object Loading : LaunchDetailsState
-    data class ProtocolError(val exception: ApolloException) : LaunchDetailsState
-    data class ApplicationError(val errors: List<Error>) : LaunchDetailsState
+    data class Error(val message: String) : LaunchDetailsState
     data class Success(val data: LaunchDetailsQuery.Data) : LaunchDetailsState
 }
 
@@ -47,20 +44,29 @@ fun LaunchDetails(launchId: String, navigateToLogin: () -> Unit) {
     var state by remember { mutableStateOf<LaunchDetailsState>(Loading) }
     LaunchedEffect(Unit) {
         val response = apolloClient.query(LaunchDetailsQuery(launchId)).execute()
-        state = if (response.data != null) {
-            Success(response.data!!)
-        } else {
-            if (response.exception != null) {
-                ProtocolError(response.exception!!)
-            } else {
-                ApplicationError(response.errors!!)
+        state = when {
+            response.errors.orEmpty().isNotEmpty() -> {
+                // GraphQL error
+                Error(response.errors!!.first().message)
+            }
+            response.exception is ApolloNetworkException -> {
+                // Network error
+                Error("Please check your network connectivity.")
+            }
+            response.data != null -> {
+                // data (never partial)
+                Success(response.data!!)
+            }
+            else -> {
+                // Another fetch error, maybe a cache miss?
+                // Or potentially a non-compliant server returning data: null without an error
+                Error("Oh no... An error happened.")
             }
         }
     }
     when (val s = state) {
         Loading -> Loading()
-        is ProtocolError -> ErrorMessage("Oh no... A protocol error happened: ${s.exception.message}")
-        is ApplicationError -> ErrorMessage(s.errors[0].message)
+        is Error -> ErrorMessage(s.message)
         is Success -> LaunchDetails(s.data, navigateToLogin)
     }
 }
