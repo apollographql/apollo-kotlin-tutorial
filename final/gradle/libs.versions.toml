@@ -11,7 +11,7 @@ composeBom = "2024.05.00"
 navigationCompose = "2.7.7"
 securityCrypto = "1.1.0-alpha06"
 coil = "2.6.0"
-apollo = "4.0.0"
+apollo = "4.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
