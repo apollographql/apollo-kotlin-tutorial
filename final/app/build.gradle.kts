@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil.compose)
+    implementation("com.apollographql.apollo:apollo-normalized-cache")
+    implementation("com.apollographql.apollo:apollo-normalized-cache-sqlite")
 
     implementation(libs.apollo.runtime)
 

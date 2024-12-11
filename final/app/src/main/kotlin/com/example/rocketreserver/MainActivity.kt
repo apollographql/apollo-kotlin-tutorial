@@ -2,6 +2,7 @@
 
 package com.example.rocketreserver
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,12 +25,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.cache.normalized.FetchPolicy
+import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo.cache.normalized.fetchPolicy
+import com.apollographql.apollo.cache.normalized.isFromCache
+import com.apollographql.apollo.cache.normalized.normalizedCache
+import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
+import com.apollographql.apollo.cache.normalized.watch
 import com.example.rocketreserver.ui.theme.RocketReserverTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        GlobalScope.launch {
+            doStuff(this@MainActivity)
+        }
+
         TokenRepository.init(this)
         setContent {
             RocketReserverTheme {
@@ -91,4 +109,29 @@ private fun MainNavHost() {
             )
         }
     }
+}
+
+private suspend fun doStuff(context: Context) {
+    val apolloClient = ApolloClient.Builder()
+        .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
+        .normalizedCache(MemoryCacheFactory().chain(SqlNormalizedCacheFactory(context)))
+        .build()
+
+    // warm the cache. Only do this once and then comment it
+//    apolloClient.query(LaunchListQuery()).fetchPolicy(FetchPolicy.CacheFirst).execute().apply {
+//        check(data != null)
+//        check(!isFromCache)
+//    }
+
+    withTimeout(1000) {
+        apolloClient.query(LaunchListQuery())
+            .fetchPolicy(FetchPolicy.CacheAndNetwork)
+            .watch()
+            .first()
+            .apply {
+                check(data != null)
+                check(isFromCache)
+            }
+    }
+    println("all good")
 }
