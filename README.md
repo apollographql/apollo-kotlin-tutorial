@@ -1,3 +1,5 @@
+# The tutorial is now part of the Odyssey learning platform and moved to https://github.com/apollographql/apollo-kotlin-odyssey
+
 # Apollo Kotlin Tutorial
 
 Repository for the [Apollo Kotlin](https://github.com/apollographql/apollo-kotlin) tutorial.
